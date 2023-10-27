@@ -16,8 +16,7 @@ export function RatingStars(ratingData: RatingsType) {
         }
 
         return stars
-    }
-
+    }   
 
     return (
         <View className='flex-col mx-auto'>

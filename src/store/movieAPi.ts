@@ -3,6 +3,11 @@ import {MovieType} from "../types/MovieType";
 import {RatingsType} from "../types/RatingsType";
 import {BaseQueryArg} from "@reduxjs/toolkit/dist/query/baseQueryTypes";
 
+type Params = {
+    pageNumber: number,
+    genre: string
+}
+
 export const movieApi = createApi({
     reducerPath: 'movieApi',
     baseQuery: fetchBaseQuery({
@@ -13,15 +18,30 @@ export const movieApi = createApi({
         }
     }),
     endpoints: builder => ({
-        getMovies: builder.query<Array<MovieType>, void>({
-            query: () => `/titles?genre=Horror&startYear=1970&sort=year.incr`,
+        getMovies: builder.query<Array<MovieType>, Params>({
+            query: ({pageNumber, genre}) => `/titles?genre=${genre}&startYear=1970&sort=year.incr&limit=10&page=${pageNumber}`,
             transformResponse: (response: { results: Array<MovieType> }) => response.results,
+            merge: (prev, next) => {
+                return [...(prev ?? []), ...next]
+
+            },
+            forceRefetch({currentArg, previousArg}) {
+                return currentArg !== previousArg
+            },
+            serializeQueryArgs: ({endpointName}) => {
+                return endpointName
+            },
+
         }),
         getRating: builder.query<RatingsType, number>({
             query: (id: number) => `/titles/${id}/ratings`,
             transformResponse: (response: { results: RatingsType }) => response.results,
+        }),
+        getOneMovie: builder.query<MovieType, number>({
+            query: (id: number) => `/titles/${id}`,
+            transformResponse: (response: { results: MovieType }) => response.results,
         })
     })
 })
 
-export const {useGetMoviesQuery, useGetRatingQuery} = movieApi
+export const {useGetMoviesQuery, useGetRatingQuery, useGetOneMovieQuery} = movieApi
