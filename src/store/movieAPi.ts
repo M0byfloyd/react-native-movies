@@ -1,5 +1,7 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 import {MovieType} from "../types/MovieType";
+import {RatingsType} from "../types/RatingsType";
+import {BaseQueryArg} from "@reduxjs/toolkit/dist/query/baseQueryTypes";
 
 export const movieApi = createApi({
     reducerPath: 'movieApi',
@@ -12,10 +14,14 @@ export const movieApi = createApi({
     }),
     endpoints: builder => ({
         getMovies: builder.query<Array<MovieType>, void>({
-            query: () => `/titles?genre=Music&startYear=1970&sort=year.incr`,
+            query: () => `/titles?genre=Horror&startYear=1970&sort=year.incr`,
             transformResponse: (response: { results: Array<MovieType> }) => response.results,
+        }),
+        getRating: builder.query<RatingsType, number>({
+            query: (id: number) => `/titles/${id}/ratings`,
+            transformResponse: (response: { results: RatingsType }) => response.results,
         })
     })
 })
 
-export const {useGetMoviesQuery} = movieApi
+export const {useGetMoviesQuery, useGetRatingQuery} = movieApi

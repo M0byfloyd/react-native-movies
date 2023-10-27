@@ -7,11 +7,6 @@ export function MoviesList() {
     const {data, isFetching, isLoading} = useGetMoviesQuery();
     const movies = data;
 
-    movies?.forEach((movie) => {
-        console.log(movie?.titleText.text)
-
-    })
-
     if (isLoading) return <Text>Loading...</Text>
     if (isFetching) return <Text>Fetching...</Text>
 
@@ -29,5 +24,3 @@ export function MoviesList() {
         </>
     )
 }
-
-const DATA = []
