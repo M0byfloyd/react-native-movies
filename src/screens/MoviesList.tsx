@@ -6,8 +6,9 @@ import {useState} from "react";
 
 export function MoviesList() {
     const [pageNumber, setPageNumber] = useState(1);
+    const [genre, setGenre] = useState('Horror');
 
-    const {data, isFetching, isLoading} = useGetMoviesQuery({pageNumber: pageNumber, genre: 'Horror'});
+    const {data, isFetching, isLoading} = useGetMoviesQuery({pageNumber: pageNumber, genre: genre});
     const movies = data;
     if (isLoading) return <Text>Loading...</Text>
 
@@ -20,10 +21,10 @@ export function MoviesList() {
                     <MovieItem {...item} />
                 }
                 onEndReached={() => {
-                    setPageNumber(page + 1)
+                    setPageNumber(pageNumber + 1)
                 }}
                 refreshControl={
-                    <RefreshControl refreshing={isFetching} onRefresh={() => console.log('coucou')}/>
+                    <RefreshControl refreshing={isFetching} onRefresh={() => setGenre('Action')}/>
                 }
                 refreshing={isFetching}
             />

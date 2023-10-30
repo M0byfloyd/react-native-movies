@@ -1,26 +1,33 @@
-import {MovieType} from "../types/MovieType";
 import {Image, Text, View} from "react-native";
-import {useRoute} from "@react-navigation/native";
-import {useGetRatingQuery} from "../store/movieAPi";
+import {useGetOneMovieQuery, useGetRatingQuery} from "../store/movieAPi";
 import {RatingStars} from "../components/RatingStars";
 import {AddToLikes} from "../components/AddToLikes";
+import {useRoute} from "@react-navigation/native";
 
 export function MoviesDetails() {
     const route = useRoute()
-    const movie: MovieType = route.params as MovieType;
+    const id: number = route.params as unknown as number;
 
-    const {data, isLoading} = useGetRatingQuery(movie.id);
-    const ratings = data;
+    const {data, isLoading} = useGetOneMovieQuery(id);
+    const movie = data;
 
     return (<>
-        <Text className="p-3 text-3xl text-center font-bold">{movie.titleText.text}</Text>
+        <Text className="p-3 text-3xl text-center font-bold">{movie?.titleText?.text}</Text>
+
+        <View className="flex-row mx-auto">
+            {
+                movie?.genres.genres.map((genre) =>
+                    <Text className="p-3 text-sm font-bold">{genre?.text}</Text>
+                )
+            }
+        </View>
 
         {isLoading && <Text>Rates are loading</Text>}
 
         <Image className="mx-auto" style={{width: 150, height: 250}} source={{uri: movie?.primaryImage?.url}}/>
 
-        {!isLoading && ratings && <RatingStars className="mx-auto" {...ratings} />}
+        {!isLoading && movie && <RatingStars className="mx-auto" {...movie.ratingsSummary} />}
 
-        <AddToLikes id={movie.id} />
+        {movie && <AddToLikes id={movie.id} hideText={false}/>}
     </>)
 }

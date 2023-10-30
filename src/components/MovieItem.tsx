@@ -10,7 +10,7 @@ export function MovieItem(movie: MovieType) {
     return (<>
         <TouchableOpacity
             style={{ flex:1, backgroundColor:'orange'}}
-            onPress={()=> navigation.navigate('MoviesDetails',movie)}
+            onPress={()=> navigation.navigate('MoviesDetails',movie.id)}
             className="rounded-md m-2"
         >
             <View>

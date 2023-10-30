@@ -1,4 +1,4 @@
 export type RatingsType = {
-    averageRating: number,
-    numVotes: number
+    aggregateRating: number,
+    voteCount: number
 }

@@ -8,11 +8,8 @@ type Props = {
 }
 
 export function LikeDisplay({id}: Props) {
-
-
     const {data, isFetching, isLoading} = useGetOneMovieQuery(id);
     const movie = data;
-
 
     if (isLoading || isFetching) {
         return <Text>Your movie is loading...</Text>
@@ -33,7 +30,7 @@ export function LikeDisplay({id}: Props) {
 
                 <View className="flex flex-col justify-between p-4 leading-normal">
 
-                    <Text className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{movie.titleText.text} </Text>
+                    <Text className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{movie?.titleText?.text} </Text>
                     <Text className='text-xl font-light'>{movie.releaseYear.year}</Text>
                     <Text className="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise
                         technology acquisitions of 2021 so far, in reverse chronological order.</Text>

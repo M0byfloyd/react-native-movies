@@ -1,5 +1,5 @@
 export type MovieType = {
-    id: number,
+    id: string,
     author: string,
     titleText:{
         text: string
